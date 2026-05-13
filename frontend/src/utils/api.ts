@@ -113,14 +113,7 @@ export const apiFetch = async (
     },
   };
 
-  // Add authentication token if available
-  const token = localStorage.getItem("token");
-  if (token && token !== "null") {
-    finalOptions.headers = {
-      ...finalOptions.headers,
-      Authorization: `Bearer ${token}`,
-    };
-  }
+
 
   // Retry logic with exponential backoff
   let lastError: Error | null = null;
@@ -141,16 +134,7 @@ export const apiFetch = async (
         return response;
       }
 
-      // Handle specific error codes
-      if (response.status === 401) {
-        // Unauthorized - clear token and retry once
-        localStorage.removeItem("token");
-        if (attempt === 0) {
-          finalOptions.headers = { ...finalOptions.headers };
-          delete (finalOptions.headers as any).Authorization;
-          continue;
-        }
-      }
+
 
       if (response.status === 503 && attempt < retries) {
         // Service unavailable - retry after delay

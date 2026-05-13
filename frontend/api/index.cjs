@@ -1,16 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const connectDB = require("./config/db.cjs");
-const authRoutes = require("./routes/authRoutes.cjs");
 const nodemailer = require("nodemailer");
-const passport = require("passport");
-require("./config/passportConfig.cjs");
 
 const app = express();
 app.set('trust proxy', 1);
-app.use(passport.initialize());
 
 const frontendOrigin = process.env.FRONTEND_URL || process.env.CLIENT_URL;
 const allowedOrigins = [frontendOrigin].filter(Boolean);
@@ -39,22 +33,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(async (req, res, next) => {
-  if (req.path === '/api/health') return next();
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    console.error("Critical: Database connection failed:", err.message);
-    res.status(503).json({ 
-      success: false, 
-      error: "Database connection failed. Please check if your IP is whitelisted in MongoDB Atlas."
-    });
-  }
-});
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -63,8 +43,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/auth", authRoutes);
+
 
 app.post("/api/contact", async (req, res) => {
   const { name, email, phone, sector, address, message } = req.body || {};
@@ -76,12 +55,14 @@ app.post("/api/contact", async (req, res) => {
   const transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST || "smtp.gmail.com",
     port: parseInt(process.env.MAIL_PORT || "587", 10),
-    secure: process.env.MAIL_SECURE === "true",
-    connectionTimeout: 10000,
+    secure: false, // Use TLS
     auth: {
       user: process.env.MAIL_USER,
       pass: process.env.MAIL_PASS,
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   const mailOptions = {
@@ -123,7 +104,7 @@ app.use((err, req, res, next) => {
 
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 8001; // Use different port for frontend API if local
-  app.listen(PORT, '0.0.0.0', () => {
+  app.listen(PORT, '127.0.0.1', () => {
     console.log(`✅ Frontend API running on port ${PORT}`);
   });
 }

@@ -29,11 +29,7 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
         },
-        '/auth': {
-          target: backendUrl,
-          changeOrigin: true,
-          secure: false,
-        },
+
       } : undefined,
     },
   };

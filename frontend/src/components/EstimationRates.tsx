@@ -26,7 +26,7 @@ const EstimationRates = () => {
           </p>
         </motion.div>
 
-        <div className="flex items-stretch md:grid overflow-x-auto snap-x snap-mandatory md:overflow-x-visible md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 pb-8 -mx-6 px-6 md:pb-0 md:mx-0 md:px-0 hide-scrollbar">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {ESTIMATION_RATES.map((rate, i) => (
             <motion.div
               key={rate.id}
@@ -35,7 +35,7 @@ const EstimationRates = () => {
               whileHover={{ y: -10 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative rounded-2xl p-6 flex flex-col h-auto group cursor-pointer overflow-hidden min-w-[85vw] sm:min-w-[280px] md:min-w-0 snap-center"
+              className="relative rounded-2xl p-4 sm:p-6 flex flex-col h-auto group cursor-pointer overflow-hidden"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 backdropFilter: 'blur(20px)',
@@ -61,7 +61,7 @@ const EstimationRates = () => {
                 >
                   {rate.icon}
                 </div>
-                <h3 className="text-white font-heading font-bold group-hover:text-accent transition-colors duration-300" style={{ fontSize: '1rem', letterSpacing: '-0.01em' }}>
+                <h3 className="text-white font-heading font-bold group-hover:text-accent transition-colors duration-300 text-[0.875rem] sm:text-[1rem]" style={{ letterSpacing: '-0.01em' }}>
                   {rate.title}
                 </h3>
               </div>
@@ -77,11 +77,11 @@ const EstimationRates = () => {
               {/* Price */}
               <div className="mt-auto relative z-10">
                 <div
-                  className="w-full flex flex-col items-center justify-center rounded-xl py-3.5 px-2 transition-all duration-400"
+                  className="w-full flex flex-col items-center justify-center rounded-xl py-2 sm:py-3.5 px-1 sm:px-2 transition-all duration-400"
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
                 >
-                  <span className="text-white font-heading font-bold group-hover:text-accent transition-colors duration-300 text-[1.125rem] sm:text-[1.375rem] tracking-tight">{rate.price}</span>
-                  <span className="text-white/35 font-semibold mt-0.5 uppercase group-hover:text-accent/60 transition-colors duration-300" style={{ fontSize: '0.625rem', letterSpacing: '0.15em' }}>{rate.unit}</span>
+                  <span className="text-white font-heading font-bold group-hover:text-accent transition-colors duration-300 text-[0.875rem] sm:text-[1.375rem] tracking-tight text-center">{rate.price}</span>
+                  <span className="text-white/35 font-semibold mt-0.5 uppercase group-hover:text-accent/60 transition-colors duration-300 text-[0.5625rem] sm:text-[0.625rem]" style={{ letterSpacing: '0.15em' }}>{rate.unit}</span>
                 </div>
               </div>
             </motion.div>
